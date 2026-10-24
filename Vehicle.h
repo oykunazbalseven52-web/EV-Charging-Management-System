@@ -10,6 +10,7 @@ private:
 
 public:
     Vehicle(std::string b, std::string m, double capacity, double level);
+    virtual ~Vehicle();
 
     std::string getBrand();
     std::string getModel();
@@ -17,8 +18,8 @@ public:
     double getBatteryLevel();
 
     void setBatteryLevel(double level);
-    void charge(double amount);
+    virtual void charge(double amount);
 
-    double calculateChargingTime(double chargingPower);
-    double calculateChargingCost(double electricityPrice);
+    virtual double calculateChargingTime(double chargingPower) = 0;
+    virtual double calculateChargingCost(double electricityPrice);
 };

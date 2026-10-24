@@ -5,6 +5,29 @@
 #include "ElectricCar.h"
 #include "ElectricBike.h"
 
+void showChargingResults(Vehicle *vehicle, double power, double price)
+{
+    double requiredEnergy =
+        vehicle->getBatteryCapacity() *
+        (100 - vehicle->getBatteryLevel()) / 100;
+
+    std::cout << "\n--- CHARGING RESULTS ---" << std::endl;
+
+    std::cout << "Brand: " << vehicle->getBrand() << std::endl;
+    std::cout << "Model: " << vehicle->getModel() << std::endl;
+
+    std::cout << "Required Energy: "
+              << requiredEnergy << " kWh" << std::endl;
+
+    std::cout << "Charging Time: "
+              << vehicle->calculateChargingTime(power)
+              << " hours" << std::endl;
+
+    std::cout << "Charging Cost: "
+              << vehicle->calculateChargingCost(price)
+              << " TL" << std::endl;
+}
+
 void handleElectricCar()
 {
     std::string brand, model;
@@ -39,6 +62,7 @@ void handleElectricCar()
         price < 0)
     {
         std::cout << "Invalid vehicle or charging information!" << std::endl;
+
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return;
@@ -46,22 +70,31 @@ void handleElectricCar()
 
     ElectricCar car1(brand, model, capacity, level, doors);
 
-    double requiredEnergy =
-        car1.getBatteryCapacity() *
-        (100 - car1.getBatteryLevel()) / 100;
+    std::cout << "Doors: "
+              << car1.getNumberOfDoors() << std::endl;
 
-    std::cout << "\n--- CHARGING RESULTS ---" << std::endl;
-    std::cout << "Brand: " << car1.getBrand() << std::endl;
-    std::cout << "Model: " << car1.getModel() << std::endl;
-    std::cout << "Doors: " << car1.getNumberOfDoors() << std::endl;
-    std::cout << "Required Energy: "
-              << requiredEnergy << " kWh" << std::endl;
-    std::cout << "Charging Time: "
-              << car1.calculateChargingTime(power)
-              << " hours" << std::endl;
-    std::cout << "Charging Cost: "
-              << car1.calculateChargingCost(price)
-              << " TL" << std::endl;
+    Vehicle *vehicle = &car1;
+
+    showChargingResults(vehicle, power, price);
+
+    double amount;
+
+    std::cout << "Enter charging amount (%): ";
+    std::cin >> amount;
+
+    if (!std::cin || amount <= 0)
+    {
+        std::cout << "Invalid charging amount!" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return;
+    }
+
+    vehicle->charge(amount);
+
+    std::cout << "Updated Battery Level: "
+              << vehicle->getBatteryLevel()
+              << "%" << std::endl;
 }
 
 void handleElectricBike()
@@ -98,6 +131,7 @@ void handleElectricBike()
         power <= 0 || price < 0)
     {
         std::cout << "Invalid bike or charging information!" << std::endl;
+
         std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         return;
@@ -105,23 +139,31 @@ void handleElectricBike()
 
     ElectricBike bike1(brand, model, capacity, level, assistLevel);
 
-    double requiredEnergy =
-        bike1.getBatteryCapacity() *
-        (100 - bike1.getBatteryLevel()) / 100;
-
-    std::cout << "\n--- CHARGING RESULTS ---" << std::endl;
-    std::cout << "Brand: " << bike1.getBrand() << std::endl;
-    std::cout << "Model: " << bike1.getModel() << std::endl;
     std::cout << "Pedal Assist Level: "
               << bike1.getPedalAssistLevel() << std::endl;
-    std::cout << "Required Energy: "
-              << requiredEnergy << " kWh" << std::endl;
-    std::cout << "Charging Time: "
-              << bike1.calculateChargingTime(power)
-              << " hours" << std::endl;
-    std::cout << "Charging Cost: "
-              << bike1.calculateChargingCost(price)
-              << " TL" << std::endl;
+
+    Vehicle *vehicle = &bike1;
+
+    showChargingResults(vehicle, power, price);
+
+    double amount;
+
+    std::cout << "Enter charging amount (%): ";
+    std::cin >> amount;
+
+    if (!std::cin || amount <= 0)
+    {
+        std::cout << "Invalid charging amount!" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return;
+    }
+
+    vehicle->charge(amount);
+
+    std::cout << "Updated Battery Level: "
+              << vehicle->getBatteryLevel()
+              << "%" << std::endl;
 }
 
 int main()
@@ -139,6 +181,7 @@ int main()
         if (!(std::cin >> choice))
         {
             std::cout << "Invalid input!" << std::endl;
+
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             continue;

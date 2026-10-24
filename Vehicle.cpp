@@ -7,6 +7,10 @@ Vehicle::Vehicle(std::string b, std::string m, double capacity, double level)
     batteryLevel = level;
 }
 
+Vehicle::~Vehicle()
+{
+}
+
 std::string Vehicle::getBrand()
 {
     return brand;
@@ -48,20 +52,6 @@ void Vehicle::charge(double amount)
             batteryLevel += amount;
         }
     }
-}
-
-double Vehicle::calculateChargingTime(double chargingPower)
-{
-    if (chargingPower <= 0)
-    {
-        return -1;
-    }
-
-    double requiredEnergy = batteryCapacity * (100 - batteryLevel) / 100;
-
-    double chargingTime = requiredEnergy / chargingPower;
-
-    return chargingTime;
 }
 
 double Vehicle::calculateChargingCost(double electricityPrice)

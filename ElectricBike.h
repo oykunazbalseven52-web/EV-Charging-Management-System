@@ -11,4 +11,6 @@ public:
     ElectricBike(std::string b, std::string m, double capacity, double level, int assistLevel);
 
     int getPedalAssistLevel();
+
+    double calculateChargingTime(double chargingPower) override;
 };

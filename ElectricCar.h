@@ -9,4 +9,6 @@ private:
 public:
     ElectricCar(std::string b, std::string m, double capacity, double level, int doors);
     int getNumberOfDoors();
+
+    double calculateChargingTime(double chargingPower) override;
 };
